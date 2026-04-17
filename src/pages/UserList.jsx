@@ -1,7 +1,7 @@
-
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import { useCallback } from "react";
 import "./UserList.css";
 
 const UserList = () => {
@@ -22,7 +22,7 @@ const UserList = () => {
     status: "active",
   });
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
       const { data } = await api.get("/users", {
@@ -35,11 +35,11 @@ const UserList = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, search, roleFilter]);
 
   useEffect(() => {
     fetchUsers();
-  }, [page, search, roleFilter]);
+  }, [fetchUsers]);
 
   const openCreate = () => {
     setEdit(null);
@@ -202,73 +202,66 @@ const UserList = () => {
       </div>
 
       {/* Modal (Add/Edit User) */}
-{showModal && (
-  <div className="overlay">
-    <div className="modal">
-      <h3>{editUser ? "Edit User" : "Create User"}</h3>
+      {showModal && (
+        <div className="overlay">
+          <div className="modal">
+            <h3>{editUser ? "Edit User" : "Create User"}</h3>
 
-      {["name", "email", "password"].map((field) => (
-        <input
-          key={field}
-          type={
-            field === "password"
-              ? "password"
-              : field === "email"
-              ? "email"
-              : "text"
-          }
-          placeholder={
-            field.charAt(0).toUpperCase() +
-            field.slice(1) +
-            (field === "password" && editUser
-              ? " (leave blank to keep)"
-              : "")
-          }
-          value={form[field]}
-          onChange={(e) =>
-            setForm({ ...form, [field]: e.target.value })
-          }
-          className="input"
-        />
-      ))}
+            {["name", "email", "password"].map((field) => (
+              <input
+                key={field}
+                type={
+                  field === "password"
+                    ? "password"
+                    : field === "email"
+                      ? "email"
+                      : "text"
+                }
+                placeholder={
+                  field.charAt(0).toUpperCase() +
+                  field.slice(1) +
+                  (field === "password" && editUser
+                    ? " (leave blank to keep)"
+                    : "")
+                }
+                value={form[field]}
+                onChange={(e) => setForm({ ...form, [field]: e.target.value })}
+                className="input"
+              />
+            ))}
 
-      {currentUser.role === "admin" && (
-        <select
-          className="input"
-          value={form.role}
-          onChange={(e) =>
-            setForm({ ...form, role: e.target.value })
-          }
-        >
-          <option value="user">User</option>
-          <option value="manager">Manager</option>
-          <option value="admin">Admin</option>
-        </select>
+            {currentUser.role === "admin" && (
+              <select
+                className="input"
+                value={form.role}
+                onChange={(e) => setForm({ ...form, role: e.target.value })}
+              >
+                <option value="user">User</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Admin</option>
+              </select>
+            )}
+
+            <select
+              className="input"
+              value={form.status}
+              onChange={(e) => setForm({ ...form, status: e.target.value })}
+            >
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+
+            <div className="modalActions">
+              <button className="addBtn" onClick={handleSave}>
+                Save
+              </button>
+              <button className="pageBtn" onClick={() => setModal(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
-
-      <select
-        className="input"
-        value={form.status}
-        onChange={(e) =>
-          setForm({ ...form, status: e.target.value })
-        }
-      >
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
-      </select>
-
-      <div className="modalActions">
-        <button className="addBtn" onClick={handleSave}>
-          Save
-        </button>
-        <button className="pageBtn" onClick={() => setModal(false)}>
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
     </div>
   );
 };
