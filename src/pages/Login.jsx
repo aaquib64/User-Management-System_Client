@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
@@ -21,7 +19,7 @@ const Login = () => {
     setError("");
     setLoading(true);
     try {
-      const { data } = await api.post('/auth/login', form);
+      const { data } = await api.post("/auth/login", form);
       login(data);
       navigate("/dashboard");
     } catch (err) {
@@ -64,9 +62,7 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="login-demo">
-          Demo: admin@example.com / Admin@123
-        </p>
+        <p className="login-demo">Demo: admin@example.com / Admin@123</p>
       </div>
     </div>
   );

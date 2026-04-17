@@ -2,9 +2,7 @@ import axios from "axios";
 
 console.log("API URL:", process.env.REACT_APP_API_URL);
 const api = axios.create({
-  
-  baseURL: 'https://user-management-system-server-r5p6.onrender.com/api',
-  
+  baseURL: "https://user-management-system-server-r5p6.onrender.com/api",
 });
 
 // Attach token to every request automatically
