@@ -1,0 +1,100 @@
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #1e293b;
+  color: #fff;
+  position: relative;
+}
+
+/* Brand */
+.brand {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Links */
+.links {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Link */
+.link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #fff;
+}
+
+/* Button */
+.btn {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s ease;
+}
+
+.btn:hover {
+  background: #dc2626;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+  /* Show hamburger */
+  .hamburger {
+    display: block;
+  }
+
+  /* Hide links initially */
+  .links {
+    display: none;
+  }
+
+  /* Show menu when open */
+  .links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background: #1e293b;
+    width: 200px;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    gap: 12px;
+    animation: fadeIn 0.2s ease-in-out;
+  }
+}
+
+/* Smooth dropdown animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

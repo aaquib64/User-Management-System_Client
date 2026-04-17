@@ -1,0 +1,32 @@
+import axios from "axios";
+
+console.log("API URL:", process.env.REACT_APP_API_URL);
+const api = axios.create({
+  
+  baseURL: 'https://user-management-system-server-r5p6.onrender.com/api',
+  
+});
+
+// Attach token to every request automatically
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Auto logout if token expired (401 response)
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  },
+);
+
+export default api;
